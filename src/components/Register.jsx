@@ -1,19 +1,13 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
-import {
-  MDBContainer,
-  MDBInput,
-  MDBCheckbox,
-  MDBBtn,
-  MDBIcon,
-} from 'mdb-react-ui-kit'
+import { MDBContainer, MDBInput } from 'mdb-react-ui-kit'
 import { useNavigate } from 'react-router-dom'
-
 import { useState } from 'react'
 import { useEffect } from 'react'
 
-const Login = () => {
+const Register = () => {
   const navigate = useNavigate()
+
   useEffect(() => {
     if (localStorage.getItem('accessToken')) {
       navigate('/')
@@ -21,31 +15,35 @@ const Login = () => {
   }, [])
 
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [password, setPassword] = useState('whatsapp')
+  const [username, setUsername] = useState('')
 
   const handleEmail = (event) => {
     setEmail(event.target.value)
   }
 
-  const handlePassword = (event) => {
-    setPassword(event.target.value)
+  const handleUsername = (event) => {
+    setUsername(event.target.value)
   }
 
-  const handleLogin = async () => {
-    const details = {
+  const handleRegister = async () => {
+    const userDetails = {
+      userName: username,
+      avatar: 'jffggf',
       email: email,
       password: password,
+      role: 'User',
     }
 
     const options = {
       method: 'POST',
-      body: JSON.stringify(details),
+      body: JSON.stringify(userDetails),
       headers: {
         'Content-Type': 'application/json',
       },
     }
 
-    const fetchURL = 'http://localhost:3001/users/login'
+    const fetchURL = 'http://localhost:3001/users/register'
 
     try {
       let response = await fetch(fetchURL, options)
@@ -70,22 +68,23 @@ const Login = () => {
         value={email}
         onChange={(event) => handleEmail(event)}
       />
-      Password
+      Username
       <MDBInput
         wrapperClass="mb-4"
-        type="password"
-        onChange={(event) => handlePassword(event)}
+        type="text"
+        value={username}
+        onChange={(event) => handleUsername(event)}
       />
-      <Button className="mb-4" onClick={handleLogin}>
-        Sign in
+      <Button className="mb-4" onClick={handleRegister}>
+        Register Account
       </Button>
       <div className="text-center">
         <p>
-          Don't have an account? <a href="#!">Register</a>
+          Already have account? <a href="#!">Login</a>
         </p>
       </div>
     </MDBContainer>
   )
 }
 
-export default Login
+export default Register

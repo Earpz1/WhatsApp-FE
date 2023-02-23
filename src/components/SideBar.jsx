@@ -1,12 +1,19 @@
 import { Container } from 'react-bootstrap'
-import { GrGroup } from 'react-icons/gr'
 import { GiCircle } from 'react-icons/gi'
 import { HiOutlineUserGroup } from 'react-icons/hi'
 import { BsFillChatLeftTextFill } from 'react-icons/bs'
 import { AiOutlineMore } from 'react-icons/ai'
 import Contact from './Contact'
+import { BiLogOut } from 'react-icons/bi'
+import { useNavigate } from 'react-router-dom'
 
 const SideBar = () => {
+  const naviagte = useNavigate()
+  const logout = () => {
+    localStorage.removeItem('accessToken')
+    naviagte('/login')
+  }
+
   return (
     <>
       <Container className="w-50 container">
@@ -16,7 +23,7 @@ const SideBar = () => {
             <HiOutlineUserGroup className="icon" />
             <GiCircle className="icon" />
             <BsFillChatLeftTextFill className="icon" />
-            <AiOutlineMore className="icon" />
+            <BiLogOut className="icon" onClick={logout} />
           </div>
         </div>
         <Contact
