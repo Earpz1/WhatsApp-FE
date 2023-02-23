@@ -25,17 +25,21 @@ const SideBar = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (user) {
-      console.log(user);
-    }
-  }, [user]);
+    dispatch(fetchUserDetails());
+  }, [dispatch]);
+
+  const myProfile = useSelector((state) => state.userInfo);
+
+  useEffect(() => {
+    console.log(myProfile);
+  }, []);
 
   return (
     <>
       <Container className="w-50 container">
         <div className="heading d-flex justify-content-between align-items-center">
           <img style={{ maxWidth: "5rem" }} src={myProfile?.avatar} />
-          1d6a8baa34a532d8352d6a54f0db2e210664
+          <p>{myProfile?.userName}</p>
           <div className="icons">
             <HiOutlineUserGroup className="icon" />
             <GiCircle className="icon" />
