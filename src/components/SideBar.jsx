@@ -1,5 +1,4 @@
-import { Container } from 'react-bootstrap'
-import { GiCircle } from 'react-icons/gi'
+
 import { Container } from 'react-bootstrap'
 import { GiCircle } from 'react-icons/gi'
 import { HiOutlineUserGroup } from 'react-icons/hi'
@@ -10,7 +9,7 @@ import { BiLogOut } from 'react-icons/bi'
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserDetails } from '../actions';
+import { fetchUserDetails } from '../redux/actions';
 
 const SideBar = () => {
   const navigate = useNavigate()
@@ -45,7 +44,7 @@ const SideBar = () => {
           </div>
         </div>
         <Contact
-          name="Timmyhhdd"
+          name="Tim"
           lastMessage="How are you?"
           lastMessageTime="14:50"
         />
