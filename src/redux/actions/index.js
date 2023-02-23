@@ -36,18 +36,18 @@ export const fetchUserDetails = () => {
 
 export const fetchUserChats = () => async (dispatch) => {
   try {
-    const response = await fetch('/chats', {
-      method: 'GET',
+    const response = await fetch("http://localhost:3001/chats", {
+      method: "GET",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     });
     if (response.ok) {
       const data = await response.json();
-      console.log("Users Chats:", data)
+      console.log("Users Chats:", data);
       dispatch({ type: SET_CHATS, payload: data });
     } else {
-      throw new Error('Network response was not ok.');
+      throw new Error("Network response was not ok.");
     }
   } catch (error) {
     console.error(error);
