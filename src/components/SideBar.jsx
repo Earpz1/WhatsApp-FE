@@ -8,7 +8,7 @@ import { BiLogOut } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserDetails } from "../redux/actions";
+import { fetchUserChats, fetchUserDetails } from "../redux/actions";
 
 const SideBar = () => {
   const navigate = useNavigate();
@@ -23,15 +23,14 @@ const SideBar = () => {
   useEffect(() => {
     dispatch(fetchUserDetails());
   }, [dispatch]);
-
   useEffect(() => {
-    dispatch(fetchUserDetails());
+    dispatch(fetchUserChats());
   }, [dispatch]);
-
   const myProfile = useSelector((state) => state.userInfo);
-
+  const myChats = useSelector((state) => state.chats);
   useEffect(() => {
     console.log(myProfile);
+    console.log(myChats);
   }, []);
 
   return (
@@ -47,11 +46,9 @@ const SideBar = () => {
             <BiLogOut className="icon" onClick={logout} />
           </div>
         </div>
-        <Contact
-          name="Timm"
-          lastMessage="How are you?"
-          lastMessageTime="14:50"
-        />
+        {myChats.map((chat) => (
+          <Contact />
+        ))}
       </Container>
     </>
   );
