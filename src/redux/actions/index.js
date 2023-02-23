@@ -24,3 +24,21 @@ export const fetchUserDetails = () => async (dispatch) => {
   }
 };
 
+export const fetchChats = () => async (dispatch) => {
+  try {
+    const response = await fetch('/chats', {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    if (response.ok) {
+      const data = await response.json();
+      dispatch({ type: SET_CHATS, payload: data }); // dispatch the action to update the chats in the state
+    } else {
+      throw new Error('Network response was not ok.');
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
