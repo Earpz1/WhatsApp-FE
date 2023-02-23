@@ -14,6 +14,8 @@ const Home = () => {
     }
   }, [])
 
+ 
+  console.log(accessToken);
 
 
   return (
