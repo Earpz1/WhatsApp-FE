@@ -17,16 +17,19 @@ const chatReducer = (state = initialState, action) => {
       return { ...state, chats: action.payload }
 
     case SET_USER_INFO:
-      return { ...state, user: action.payload }
-    // UPDATES NEEDED WITH CORRECT PAYLOADS
+      return { ...state, userInfo: action.payload }
+
     case SET_ACTIVE_CHAT:
-      return { ...state, activeChat: action.payload }
+      // TODO: handle SET_ACTIVE_CHAT action
+      return state
 
     case SET_HISTORY:
-      return { ...state, user: action.payload }
+      // TODO: handle SET_HISTORY action
+      return state
 
     case NEW_MESSAGE:
-      return { ...state, user: action.payload }
+      // TODO: handle NEW_MESSAGE action
+      return state
 
     default:
       return state

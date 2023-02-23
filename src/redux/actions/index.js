@@ -6,47 +6,21 @@ export const NEW_MESSAGE = 'NEW_MESSAGE'
 export const CHECK_AUTHENTICATION = 'CHECK_AUTHENTICATION'
 export const SAVE_TOKEN = 'SAVE_TOKEN'
 
-export const getMyUserDetailsAction = (accessToken) => {
-  return async (dispatch) => {
-    const optionsGet = {
-      method: 'GET',
+export const fetchUserDetails = () => async (dispatch) => {
+  try {
+    const response = await fetch('/users/me', {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
-        // Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2YzNjExZjJkNGFjMjlkZWNiNzhlNWMiLCJpYXQiOjE2NzY5NzMwODgsImV4cCI6MTY3NzU3Nzg4OH0.TEfdfhhYn4GDBA99-1I0cGasGA5-6tZmk0eHkia7bhV`,
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
+    });
+    if (response.ok) {
+      const data = await response.json();
+      dispatch({ type: 'SET_USER_INFO', payload: data }); // dispatch the action to update the user info in the state
+    } else {
+      throw new Error('Network response was not ok.');
     }
-    try {
-      let response = await fetch(`http://localhost:3001/users/me`, optionsGet)
-      if (response.ok || response.status === 204) {
-        let data = await response.json()
-        console.log(data)
-
-        dispatch({
-          type: CHECK_AUTHENTICATION,
-          payload: true,
-        })
-      } else {
-        console.log('Error fetching own user data')
-        dispatch({
-          type: CHECK_AUTHENTICATION,
-          payload: false,
-        })
-        dispatch({
-          type: SAVE_TOKEN,
-          payload: '',
-        })
-      }
-    } catch (error) {
-      console.log('error: ', error)
-      dispatch({
-        type: CHECK_AUTHENTICATION,
-        payload: false,
-      })
-      dispatch({
-        type: SAVE_TOKEN,
-        payload: '',
-      })
-    }
+  } catch (error) {
+    dispatch({ type: 'FETCH_USER_FAILURE', payload: error });
   }
-}
+};
+

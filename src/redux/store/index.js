@@ -1,6 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
 import chatReducer from '../reducer/chatReducer'
 
-export const store = configureStore({
+const store = configureStore({
   reducer: chatReducer,
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(thunkMiddleware),
 })
+
+export default store;

@@ -1,18 +1,36 @@
 import { Container } from 'react-bootstrap'
 import { GiCircle } from 'react-icons/gi'
+import { Container } from 'react-bootstrap'
+import { GiCircle } from 'react-icons/gi'
 import { HiOutlineUserGroup } from 'react-icons/hi'
 import { BsFillChatLeftTextFill } from 'react-icons/bs'
 import { AiOutlineMore } from 'react-icons/ai'
 import Contact from './Contact'
 import { BiLogOut } from 'react-icons/bi'
 import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserDetails } from '../actions';
 
 const SideBar = () => {
-  const naviagte = useNavigate()
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state);
+
   const logout = () => {
     localStorage.removeItem('accessToken')
-    naviagte('/login')
+    navigate('/login')
   }
+
+  useEffect(() => {
+    dispatch(fetchUserDetails());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+    }
+  }, [user]);
 
   return (
     <>
@@ -27,7 +45,7 @@ const SideBar = () => {
           </div>
         </div>
         <Contact
-          name="Tim"
+          name="Timmyhh"
           lastMessage="How are you?"
           lastMessageTime="14:50"
         />
