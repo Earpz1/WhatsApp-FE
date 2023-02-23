@@ -6,6 +6,12 @@ import { useNavigate } from 'react-router-dom'
 const Home = () => {
   const navigate = useNavigate()
 
+  useEffect(() => {
+    if (!localStorage.getItem('accessToken')) {
+      navigate('/login')
+    }
+  }, [])
+
   return (
     <>
       <div className="mainContainer d-flex justify-content-center">

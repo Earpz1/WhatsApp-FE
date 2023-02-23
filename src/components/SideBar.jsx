@@ -1,5 +1,4 @@
 import { Container } from 'react-bootstrap'
-import { GrGroup } from 'react-icons/gr'
 import { GiCircle } from 'react-icons/gi'
 import { HiOutlineUserGroup } from 'react-icons/hi'
 import { BsFillChatLeftTextFill } from 'react-icons/bs'
