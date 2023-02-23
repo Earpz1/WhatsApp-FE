@@ -7,16 +7,11 @@ import { getMyUserDetailsAction } from '../redux/actions'
 const Home = () => {
   const navigate = useNavigate()
 
-
   useEffect(() => {
     if (!localStorage.getItem('accessToken')) {
       navigate('/login')
     }
   }, [])
-
- 
-  console.log(accessToken);
-
 
   return (
     <>

@@ -81,7 +81,7 @@ const Login = () => {
       </Button>
       <div className="text-center">
         <p>
-          Don't have an account? <a href="#!">Register</a>
+          Don't have an account? <a href="/register">Register</a>
         </p>
       </div>
     </MDBContainer>
