@@ -10,9 +10,15 @@ import {
 import { useNavigate } from 'react-router-dom'
 
 import { useState } from 'react'
+import { useEffect } from 'react'
 
 const Login = () => {
   const navigate = useNavigate()
+  useEffect(() => {
+    if (localStorage.getItem('accessToken')) {
+      navigate('/')
+    }
+  }, [])
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -39,7 +45,7 @@ const Login = () => {
       },
     }
 
-    const fetchURL = 'http://localhost:3001/auth/signin'
+    const fetchURL = 'http://localhost:3001/users/login'
 
     try {
       let response = await fetch(fetchURL, options)
@@ -47,7 +53,7 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json()
         console.log(response.status)
-        localStorage.setItem('accessToken', data.token)
+        localStorage.setItem('accessToken', data.accessToken)
         navigate('/')
       } else {
         console.log(response.status)
