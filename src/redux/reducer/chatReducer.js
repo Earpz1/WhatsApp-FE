@@ -1,4 +1,4 @@
-import { SET_CHATS, SET_USER_INFO, SET_ACTIVE_CHAT, SET_HISTORY, NEW_MESSAGE } from '../actions'
+import { SET_CHATS, SET_USER_INFO, SET_ACTIVE_CHAT, SET_HISTORY, NEW_MESSAGE, GET_SOCKET, SAVE_USER } from '../actions'
 
 const initialState = {
   userInfo: {},
@@ -22,6 +22,12 @@ const chatReducer = (state = initialState, action) => {
 
     case NEW_MESSAGE:
       return { ...state, user: action.payload }
+
+      case GET_SOCKET:
+        return { ...state, user: action.payload }
+
+        case SAVE_USER:
+          return { ...state, user: action.payload }
 
     default:
       return state
