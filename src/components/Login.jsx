@@ -1,65 +1,69 @@
-import React from 'react'
-import { Button } from 'react-bootstrap'
+import React from "react";
+import { Button } from "react-bootstrap";
 import {
   MDBContainer,
   MDBInput,
   MDBCheckbox,
   MDBBtn,
   MDBIcon,
-} from 'mdb-react-ui-kit'
-import { useNavigate } from 'react-router-dom'
+} from "mdb-react-ui-kit";
+import { useNavigate } from "react-router-dom";
 
-import { useState } from 'react'
-import { useEffect } from 'react'
-
+import { useState } from "react";
+import { useEffect } from "react";
+import { SAVE_TOKEN } from "../redux/actions";
+import { useDispatch } from "react-redux";
+import { fetchUserDetails } from "../redux/actions";
+const dispatch = useDispatch;
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
-    if (localStorage.getItem('accessToken')) {
-      navigate('/')
+    if (localStorage.getItem("accessToken")) {
+      navigate("/");
     }
-  }, [])
+  }, []);
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleEmail = (event) => {
-    setEmail(event.target.value)
-  }
+    setEmail(event.target.value);
+  };
 
   const handlePassword = (event) => {
-    setPassword(event.target.value)
-  }
+    setPassword(event.target.value);
+  };
 
   const handleLogin = async () => {
     const details = {
       email: email,
       password: password,
-    }
+    };
 
     const options = {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(details),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-    }
+    };
 
-    const fetchURL = 'http://localhost:3001/users/login'
+    const fetchURL = "http://localhost:3001/users/login";
 
     try {
-      let response = await fetch(fetchURL, options)
+      let response = await fetch(fetchURL, options);
 
       if (response.ok) {
-        const data = await response.json()
-        console.log(response.status)
-        localStorage.setItem('accessToken', data.accessToken)
-        navigate('/')
+        const data = await response.json();
+
+        console.log(response.status);
+        localStorage.setItem("accessToken", data.accessToken);
+        navigate("/");
       } else {
-        console.log(response.status)
+        console.log(response.status);
       }
     } catch (error) {}
-  }
+  };
 
   return (
     <MDBContainer className="p-3 my-5 d-flex flex-column w-25">
@@ -85,7 +89,7 @@ const Login = () => {
         </p>
       </div>
     </MDBContainer>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

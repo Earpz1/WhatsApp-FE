@@ -1,36 +1,39 @@
-import { Container } from 'react-bootstrap'
-import { GiCircle } from 'react-icons/gi'
-import { Container } from 'react-bootstrap'
-import { GiCircle } from 'react-icons/gi'
-import { HiOutlineUserGroup } from 'react-icons/hi'
-import { BsFillChatLeftTextFill } from 'react-icons/bs'
-import { AiOutlineMore } from 'react-icons/ai'
-import Contact from './Contact'
-import { BiLogOut } from 'react-icons/bi'
-import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserDetails } from '../actions';
+import { Container } from "react-bootstrap";
+import { GiCircle } from "react-icons/gi";
+
+import { HiOutlineUserGroup } from "react-icons/hi";
+import { BsFillChatLeftTextFill } from "react-icons/bs";
+import { AiOutlineMore } from "react-icons/ai";
+import Contact from "./Contact";
+import { BiLogOut } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserDetails } from "../redux/actions";
 
 const SideBar = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state);
+  const { user } = useSelector((state) => state);
 
   const logout = () => {
-    localStorage.removeItem('accessToken')
-    navigate('/login')
-  }
+    localStorage.removeItem("accessToken");
+    navigate("/login");
+  };
 
   useEffect(() => {
     dispatch(fetchUserDetails());
   }, [dispatch]);
 
+  const myProfile = useSelector((state) => state.userInfo);
+
   useEffect(() => {
-    if (user) {
-      console.log(user);
-    }
-  }, [user]);
+    console.log(myProfile);
+  }, []);
+  //   if (user) {
+  //     console.log(user);
+  //   }
+  // }, [user]);
 
   return (
     <>
@@ -106,7 +109,7 @@ const SideBar = () => {
         />
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default SideBar
+export default SideBar;
