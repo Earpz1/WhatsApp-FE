@@ -45,7 +45,7 @@ const SideBar = () => {
           </div>
         </div>
         <Contact
-          name="Timmyhh"
+          name="Timmyhhdd"
           lastMessage="How are you?"
           lastMessageTime="14:50"
         />
