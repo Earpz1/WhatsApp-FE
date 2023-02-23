@@ -46,9 +46,15 @@ const SideBar = () => {
             <BiLogOut className="icon" onClick={logout} />
           </div>
         </div>
-        {myChats.map((chat) => (
-          <Contact />
-        ))}
+        {myChats.length > 0 && myChats.map((chat) => (
+  <Contact
+    key={chat._id}
+    name={chat.members.join(', ')}
+    lastMessage={chat.messages.length > 0 ? chat.messages[chat.messages.length - 1] : ''}
+    lastMessageTime={chat.updatedAt}
+  />
+))}
+
       </Container>
     </>
   );
