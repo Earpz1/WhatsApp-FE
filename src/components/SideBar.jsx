@@ -39,7 +39,7 @@ const SideBar = () => {
     <>
       <Container className="w-50 container">
         <div className="heading d-flex justify-content-between align-items-center">
-          <img src="https://i.pravatar.cc/50?img=1" />
+          <img style={{ maxWidth: "5rem" }} src={myProfile?.avatar} />
           <div className="icons">
             <HiOutlineUserGroup className="icon" />
             <GiCircle className="icon" />
