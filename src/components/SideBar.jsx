@@ -8,7 +8,11 @@ import { BiLogOut } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserChats, fetchUserDetails, updateUserDetails } from "../redux/actions";
+import {
+  fetchUserChats,
+  fetchUserDetails,
+  updateUserDetails,
+} from "../redux/actions";
 
 const SideBar = () => {
   const navigate = useNavigate();
@@ -44,13 +48,19 @@ const SideBar = () => {
     if (password) {
       updatedDetails.password = password;
     }
-    dispatch(updateUserDetails(myProfile._id, {
-      userName,
-      avatar,
-      email,
-      password
-    }, localStorage.getItem("accessToken")));
-        setShowModal(false);
+    dispatch(
+      updateUserDetails(
+        myProfile._id,
+        {
+          userName,
+          avatar,
+          email,
+          password,
+        },
+        localStorage.getItem("accessToken")
+      )
+    );
+    setShowModal(false);
   };
 
   useEffect(() => {
@@ -76,71 +86,70 @@ const SideBar = () => {
             <BiLogOut className="icon" onClick={logout} />
           </div>
         </div>
-        {myChats && myChats.length > 0 && myChats.map((chat) => (
-          <Contact
-            key={chat._id}
-            name={chat.members.join(', ')}
-            lastMessageTime={chat.updatedAt}
-          />
-        ))}
+        {myChats &&
+          myChats.length > 0 &&
+          myChats.map((chat, i) => (
+            <Contact
+              key={chat._id}
+              name={chat.members[i].userName}
+              lastMessageTime={chat.updatedAt}
+            />
+          ))}
       </Container>
       <Modal show={showModal} onHide={handleClose}>
-  <Modal.Header closeButton>
-    <Modal.Title>Edit Profile</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="formUserName">
-        <Form.Label>Username</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder={myProfile.userName}
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-        />
-      </Form.Group>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Profile</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formUserName">
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder={myProfile.userName}
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+              />
+            </Form.Group>
 
-      <Form.Group controlId="formAvatar">
-        <Form.Label>Avatar URL</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder={myProfile.avatar}
-          value={avatar}
-          onChange={(e) => setAvatar(e.target.value)}
-        />
-      </Form.Group>   
-      
-      <Form.Group controlId="formEmail">
-        <Form.Label>Email</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder={myProfile.email}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </Form.Group> 
-      
-      <Form.Group controlId="formPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder={myProfile.password}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </Form.Group>
+            <Form.Group controlId="formAvatar">
+              <Form.Label>Avatar URL</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder={myProfile.avatar}
+                value={avatar}
+                onChange={(e) => setAvatar(e.target.value)}
+              />
+            </Form.Group>
 
-      
+            <Form.Group controlId="formEmail">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder={myProfile.email}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Form.Group>
 
-      <Button variant="primary" type="submit">
-        Save Changes
-      </Button>
-    </Form>
-  </Modal.Body>
-</Modal>
+            <Form.Group controlId="formPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder={myProfile.password}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
 
-</>
-);
+            <Button variant="primary" type="submit">
+              Save Changes
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
 };
 
 export default SideBar;
