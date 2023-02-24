@@ -2,25 +2,62 @@ import { Button, Container } from "react-bootstrap";
 import { AiOutlineMore, AiOutlineSearch } from "react-icons/ai";
 import ChatBubble from "react-chat-bubble";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchChatData } from "../redux/actions";
+import axios from "axios";
 
-const Messages = () => {
-  const [messages, setMessage] = useState([
-    {
-      type: 0,
-      image: "https://via.placeholder.com/150 ",
-      text: "Hello! Good Morning!",
-    },
-    {
-      type: 1,
-      image: "https://via.placeholder.com/150 ",
-      text: "Hello! Good Afternoon!",
-    },
-  ]);
-  let myChater = useSelector((state) => state.activeChat);
+const Messages = ({ myProfile }) => {
+  const [messages, setMessages] = useState([]);
+  const [inputMessage, setInputMessage] = useState("");
+  const activeChatId = useSelector((state) => state.activeChat);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    console.log(myChater);
-  }, [myChater]);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/chats/${activeChatId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        setMessages(response.data.messages);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    if (activeChatId) {
+      fetchData();
+    }
+  }, [activeChatId]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(
+        `http://localhost:3001/chats/${activeChatId}`,
+        { text: inputMessage },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      setInputMessage("");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleChange = (e) => {
+    setInputMessage(e.target.value);
+  };
+
+  console.log("myProfile:", myProfile);
+
+
   return (
     <>
       <Container>
@@ -35,50 +72,42 @@ const Messages = () => {
           </div>
         </div>
         <div className="d-flex flex-column messageContainer">
-          <div className="messageSent">
-            Testing message Testing messageTesting messageTesting messageTesting
-            messageTesting messageTesting message
-          </div>
-          <div className="messageRecieved ">
-            Testing message Testing messageTesting messageTesting messageTesting
-            messageTesting messageTesting message
-          </div>
-          <div className="messageSent">
-            Testing message Testing messageTesting messageTesting messageTesting
-            messageTesting messageTesting message
-          </div>
-          <div className="messageRecieved ">
-            Testing message Testing messageTesting messageTesting messageTesting
-            messageTesting messageTesting message
-          </div>
-          <div className="messageSent">
-            Testing message Testing messageTesting messageTesting messageTesting
-            messageTesting messageTesting message
-          </div>
-          <div className="messageRecieved ">
-            Testing message Testing messageTesting messageTesting messageTesting
-            messageTesting messageTesting message
-          </div>
-          <div className="messageSent">
-            Testing message Testing messageTesting messageTesting messageTesting
-            messageTesting messageTesting message
-          </div>
-          <div className="messageRecieved ">
-            Testing message Testing messageTesting messageTesting messageTesting
-            messageTesting messageTesting message
-          </div>
+        {messages &&
+  messages.map((message) => (
+    <div
+      key={message._id}
+      className={`message${
+        message.sender._id === myProfile.userName ? "Sent" : "Recieved"
+      }`}
+    >
+      {message.content.text}
+    </div>
+  ))
+}
+
+
+
+
+
+
+
         </div>
-        <div className="d-flex message-heading">
+        <form className="d-flex message-heading" onSubmit={handleSubmit}>
           <input
             type="text"
             name="enter message"
             className="input-message"
             placeholder="Type a message..."
+            value={inputMessage}
+            onChange={handleChange}
           />
-          <Button className="w-25">Send Message</Button>
-        </div>
+          <Button type="submit" className="w-25">
+            Send Message
+          </Button>
+        </form>
       </Container>
     </>
   );
 };
+
 export default Messages;

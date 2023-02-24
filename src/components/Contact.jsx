@@ -2,12 +2,12 @@ import { Container } from 'react-bootstrap'
 import { BsCheck2All } from 'react-icons/bs'
 import { useSelector } from 'react-redux'
 
-const Contact = ({ name, lastMessage, lastMessageTime, avatar }) => {
+const Contact = ({ name, lastMessage, lastMessageTime, avatar, chatId, handleChatClick }) => {
   const myProfile = useSelector((state) => state.userInfo)
 
   return (
     <>
-      <Container>
+      <Container onClick={() => handleChatClick(chatId)}>
         <div className="contact d-flex align-items-center justify-content-between">
           <div className="d-flex justify-content-between">
             <img src={avatar} width="50" />
