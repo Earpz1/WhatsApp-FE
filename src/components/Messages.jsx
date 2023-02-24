@@ -1,4 +1,4 @@
-import { Container } from 'react-bootstrap'
+import { Button, Container } from 'react-bootstrap'
 import { AiOutlineMore, AiOutlineSearch } from 'react-icons/ai'
 import ChatBubble from 'react-chat-bubble'
 import { useState } from 'react'
@@ -62,6 +62,15 @@ const Messages = () => {
             Testing message Testing messageTesting messageTesting messageTesting
             messageTesting messageTesting message
           </div>
+        </div>
+        <div className="d-flex message-heading">
+          <input
+            type="text"
+            name="enter message"
+            className="input-message"
+            placeholder="Type a message..."
+          />
+          <Button className="w-25">Send Message</Button>
         </div>
       </Container>
     </>
