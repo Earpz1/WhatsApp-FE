@@ -4,6 +4,7 @@ import {
   SET_ACTIVE_CHAT,
   SET_HISTORY,
   NEW_MESSAGE,
+  UPDATE_USER_DETAILS
 } from "../actions";
 
 const initialState = {
@@ -18,6 +19,9 @@ const chatReducer = (state = initialState, action) => {
 
     case SET_USER_INFO:
       return { ...state, userInfo: action.payload };
+
+    case UPDATE_USER_DETAILS:
+      return { ...state, userInfo: { ...state.userInfo, ...action.payload } };
 
     case SET_ACTIVE_CHAT:
       // TODO: handle SET_ACTIVE_CHAT action

@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const SET_CHATS = "SAVE_USER";
 export const SET_USER_INFO = "SET_USER_INFO";
 export const SET_ACTIVE_CHAT = "SET_ACTIVE_CHAT";
@@ -5,6 +7,9 @@ export const SET_HISTORY = "SET_HISTORY";
 export const NEW_MESSAGE = "NEW_MESSAGE";
 export const CHECK_AUTHENTICATION = "CHECK_AUTHENTICATION";
 export const SAVE_TOKEN = "SAVE_TOKEN";
+export const UPDATE_USER_DETAILS = "UPDATE_USER_DETAILS";
+
+const BE_URL = process.env.BE_URL
 
 export const fetchUserDetails = () => {
   return async (dispatch) => {
@@ -53,3 +58,25 @@ export const fetchUserChats = () => async (dispatch) => {
     console.error(error);
   }
 };
+
+export const updateUserDetails = (userId, updatedDetails, token) => {
+  return async (dispatch) => {
+    try {
+      console.log("Request body:", JSON.stringify(updatedDetails));
+      const { data } = await axios.put(`http://localhost:3001/users/me`, updatedDetails, {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+      });
+      dispatch({ type: UPDATE_USER_DETAILS, payload: data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+
+
+
+
