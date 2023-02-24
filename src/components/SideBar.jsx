@@ -87,14 +87,15 @@ const SideBar = () => {
           </div>
         </div>
         {myChats &&
-          myChats.length > 0 &&
-          myChats.map((chat, i) => (
-            <Contact
-              key={chat._id}
-              name={chat.members[i].userName}
-              lastMessageTime={chat.updatedAt}
-            />
-          ))}
+  myChats.length > 0 &&
+  myChats.map((chat) => (
+    <Contact
+      key={chat._id}
+      name={chat.members.map(member => member.userName).join(', ')}
+      lastMessageTime={chat.updatedAt}
+    />
+  ))}
+
       </Container>
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
