@@ -1,18 +1,19 @@
-import { Container, Modal, Form, Button, ListGroup } from 'react-bootstrap'
-import { useState } from 'react'
-import { GiCircle } from 'react-icons/gi'
-import { HiOutlineUserGroup } from 'react-icons/hi'
-import { BsCloudSnowFill, BsFillChatLeftTextFill } from 'react-icons/bs'
-import Contact from './Contact'
-import { BiLogOut } from 'react-icons/bi'
-import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { Container, Modal, Form, Button } from "react-bootstrap";
+import { useState } from "react";
+import { GiCircle } from "react-icons/gi";
+import { HiOutlineUserGroup } from "react-icons/hi";
+import { BsFillChatLeftTextFill } from "react-icons/bs";
+import Contact from "./Contact";
+import { BiLogOut } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   fetchUserChats,
   fetchUserDetails,
   updateUserDetails,
-} from '../redux/actions'
+} from "../redux/actions";
+
 
 const SideBar = () => {
   const navigate = useNavigate()
@@ -77,11 +78,12 @@ const SideBar = () => {
           email,
           password,
         },
-        localStorage.getItem('accessToken'),
-      ),
-    )
-    setShowModal(false)
-  }
+        localStorage.getItem("accessToken")
+      )
+    );
+    setShowModal(false);
+  };
+
 
   useEffect(() => {
     dispatch(fetchUserDetails())
@@ -106,6 +108,7 @@ const SideBar = () => {
             <BiLogOut className="icon" onClick={logout} />
           </div>
         </div>
+
         <input
           type="text"
           name="enter message"
@@ -128,6 +131,17 @@ const SideBar = () => {
               lastMessageTime={chat.updatedAt}
             />
           ))}
+
+        {myChats &&
+  myChats.length > 0 &&
+  myChats.map((chat) => (
+    <Contact
+      key={chat._id}
+      name={chat.members.map(member => member.userName).join(', ')}
+      lastMessageTime={chat.updatedAt}
+    />
+  ))}
+
       </Container>
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -182,7 +196,8 @@ const SideBar = () => {
         </Modal.Body>
       </Modal>
     </>
-  )
-}
+  );
+};
+
 
 export default SideBar
