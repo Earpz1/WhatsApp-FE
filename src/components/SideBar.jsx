@@ -126,8 +126,12 @@ const SideBar = () => {
     <>
       <Container className="w-50 container">
         <div className="heading d-flex justify-content-between align-items-center">
-          <img style={{ maxWidth: '5rem' }} src={myProfile?.avatar} />
-          <p>{myProfile?.userName}</p>
+          <img
+            style={{ maxWidth: '5rem' }}
+            src={myProfile?.avatar}
+            width="50"
+          />
+          <h3>{myProfile?.userName}</h3>
           <Button onClick={handleShow}>Edit Profile</Button>
           <div className="icons">
             <HiOutlineUserGroup className="icon" />
