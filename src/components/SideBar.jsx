@@ -159,8 +159,9 @@ const SideBar = () => {
           myChats.map((chat) => (
             <Contact
               key={chat._id}
-              name={chat.members.map((member) => member.userName).join(', ')}
+              name={chat.members.map((member) => member.userName).join('')}
               lastMessageTime={chat.updatedAt}
+              avatar={chat.members.map((member) => member.avatar)}
             />
           ))}
       </Container>
