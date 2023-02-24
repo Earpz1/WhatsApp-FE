@@ -1,21 +1,26 @@
-import { Button, Container } from 'react-bootstrap'
-import { AiOutlineMore, AiOutlineSearch } from 'react-icons/ai'
-import ChatBubble from 'react-chat-bubble'
-import { useState } from 'react'
+import { Button, Container } from "react-bootstrap";
+import { AiOutlineMore, AiOutlineSearch } from "react-icons/ai";
+import ChatBubble from "react-chat-bubble";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Messages = () => {
   const [messages, setMessage] = useState([
     {
       type: 0,
-      image: 'https://via.placeholder.com/150 ',
-      text: 'Hello! Good Morning!',
+      image: "https://via.placeholder.com/150 ",
+      text: "Hello! Good Morning!",
     },
     {
       type: 1,
-      image: 'https://via.placeholder.com/150 ',
-      text: 'Hello! Good Afternoon!',
+      image: "https://via.placeholder.com/150 ",
+      text: "Hello! Good Afternoon!",
     },
-  ])
+  ]);
+  let myChater = useSelector((state) => state.activeChat);
+  useEffect(() => {
+    console.log(myChater);
+  }, [myChater]);
   return (
     <>
       <Container>
@@ -74,6 +79,6 @@ const Messages = () => {
         </div>
       </Container>
     </>
-  )
-}
-export default Messages
+  );
+};
+export default Messages;

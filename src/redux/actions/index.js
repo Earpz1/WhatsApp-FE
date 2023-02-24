@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 export const SET_CHATS = "SAVE_USER";
 export const SET_USER_INFO = "SET_USER_INFO";
@@ -8,8 +8,15 @@ export const NEW_MESSAGE = "NEW_MESSAGE";
 export const CHECK_AUTHENTICATION = "CHECK_AUTHENTICATION";
 export const SAVE_TOKEN = "SAVE_TOKEN";
 export const UPDATE_USER_DETAILS = "UPDATE_USER_DETAILS";
+export const SAVE_CHAT = "SAVE_CHAT";
+const BE_URL = process.env.BE_URL;
 
-const BE_URL = process.env.BE_URL
+export const saveChatsAction = (activeChat) => {
+  return {
+    type: SAVE_CHAT,
+    payload: activeChat,
+  };
+};
 
 export const fetchUserDetails = () => {
   return async (dispatch) => {
@@ -63,20 +70,19 @@ export const updateUserDetails = (userId, updatedDetails, token) => {
   return async (dispatch) => {
     try {
       console.log("Request body:", JSON.stringify(updatedDetails));
-      const { data } = await axios.put(`http://localhost:3001/users/me`, updatedDetails, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-      });
+      const { data } = await axios.put(
+        `http://localhost:3001/users/me`,
+        updatedDetails,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       dispatch({ type: UPDATE_USER_DETAILS, payload: data });
     } catch (error) {
       console.log(error);
     }
   };
 };
-
-
-
-
-

@@ -4,12 +4,14 @@ import {
   SET_ACTIVE_CHAT,
   SET_HISTORY,
   NEW_MESSAGE,
-  UPDATE_USER_DETAILS
+  UPDATE_USER_DETAILS,
+  SAVE_CHAT,
 } from "../actions";
 
 const initialState = {
   userInfo: {},
   chats: [],
+  activeChat: " ",
 };
 
 const chatReducer = (state = initialState, action) => {
@@ -34,6 +36,8 @@ const chatReducer = (state = initialState, action) => {
     case NEW_MESSAGE:
       // TODO: handle NEW_MESSAGE action
       return state;
+    case SAVE_CHAT:
+      return { ...state, activeChat: action.payload };
 
     default:
       return state;

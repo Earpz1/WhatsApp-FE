@@ -1,102 +1,106 @@
-import { Container, Modal, Form, Button, ListGroup } from 'react-bootstrap'
-import { useState } from 'react'
-import { GiCircle } from 'react-icons/gi'
-import { HiOutlineUserGroup } from 'react-icons/hi'
-import { BsFillChatLeftTextFill } from 'react-icons/bs'
-import Contact from './Contact'
-import { BiLogOut } from 'react-icons/bi'
-import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { Container, Modal, Form, Button, ListGroup } from "react-bootstrap";
+import { useState } from "react";
+import { GiCircle } from "react-icons/gi";
+import { HiOutlineUserGroup } from "react-icons/hi";
+import { BsFillChatLeftTextFill } from "react-icons/bs";
+import Contact from "./Contact";
+import { BiLogOut } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   fetchUserChats,
   fetchUserDetails,
+  saveChatsAction,
   updateUserDetails,
-} from '../redux/actions'
+} from "../redux/actions";
 
 const SideBar = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { user } = useSelector((state) => state)
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state);
 
   const logout = () => {
-    localStorage.removeItem('accessToken')
-    navigate('/login')
-  }
+    localStorage.removeItem("accessToken");
+    navigate("/login");
+  };
 
-  const [showModal, setShowModal] = useState(false)
-  const [userName, setUserName] = useState('')
-  const [avatar, setAvatar] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [filterUsername, setFilterUsername] = useState('')
-  const [usernameSearch, setUsernameSearch] = useState('')
-
-  const handleClose = () => setShowModal(false)
-  const handleShow = () => setShowModal(true)
+  const [showModal, setShowModal] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [avatar, setAvatar] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [filterUsername, setFilterUsername] = useState("");
+  const [usernameSearch, setUsernameSearch] = useState("");
+  const [chater, setMyChater] = useState("");
+  const handleClose = () => setShowModal(false);
+  const handleShow = () => setShowModal(true);
+  const onChangeHandler = (chater) => {
+    dispatch(saveChatsAction(chater));
+  };
 
   const createChat = async (recipientID) => {
     const chat = {
       recipients: [recipientID],
-    }
+    };
 
     const options = {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(chat),
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
       },
-    }
+    };
 
-    const fetchURL = `http://localhost:3001/chats/`
+    const fetchURL = `http://localhost:3001/chats/`;
 
     try {
-      let response = await fetch(fetchURL, options)
+      let response = await fetch(fetchURL, options);
       if (response.ok) {
-        const data = await response.json()
-        dispatch(fetchUserChats())
-        setFilterUsername('')
+        const data = await response.json();
+        dispatch(fetchUserChats());
+        setFilterUsername("");
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const handleQuery = async (event) => {
-    setUsernameSearch(event.target.value)
+    setUsernameSearch(event.target.value);
     const options = {
-      method: 'GET',
+      method: "GET",
       headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
       },
-    }
-    const fetchURL = `http://localhost:3001/users/?userName=${event.target.value}`
+    };
+    const fetchURL = `http://localhost:3001/users/?userName=${event.target.value}`;
 
     try {
-      let response = await fetch(fetchURL, options)
+      let response = await fetch(fetchURL, options);
       if (response.ok) {
-        const data = await response.json()
-        setFilterUsername(data)
-        setUsernameSearch('')
+        const data = await response.json();
+        setFilterUsername(data);
+        setUsernameSearch("");
       }
     } catch (error) {}
-  }
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    const updatedDetails = {}
+    e.preventDefault();
+    const updatedDetails = {};
     if (userName) {
-      updatedDetails.userName = userName
+      updatedDetails.userName = userName;
     }
     if (avatar) {
-      updatedDetails.avatar = avatar
+      updatedDetails.avatar = avatar;
     }
     if (email) {
-      updatedDetails.email = email
+      updatedDetails.email = email;
     }
     if (password) {
-      updatedDetails.password = password
+      updatedDetails.password = password;
     }
     dispatch(
       updateUserDetails(
@@ -107,26 +111,34 @@ const SideBar = () => {
           email,
           password,
         },
-        localStorage.getItem('accessToken'),
-      ),
-    )
-    setShowModal(false)
-  }
+        localStorage.getItem("accessToken")
+      )
+    );
+    setShowModal(false);
+  };
 
   useEffect(() => {
-    dispatch(fetchUserDetails())
-  }, [dispatch])
+    dispatch(fetchUserDetails());
+  }, [dispatch]);
   useEffect(() => {
-    dispatch(fetchUserChats())
-  }, [dispatch])
-  const myProfile = useSelector((state) => state.userInfo)
-  const myChats = useSelector((state) => state.chats)
+    dispatch(fetchUserChats());
+  }, [dispatch]);
+  const myProfile = useSelector((state) => state.userInfo);
+  const myChats = useSelector((state) => state.chats);
+  let myChater = useSelector((state) => state.activeChat);
+  myChater = chater;
 
+  useEffect(() => {
+    console.log(myChater);
+  }, [myChater]);
+  useEffect(() => {
+    console.log(chater);
+  }, [chater]);
   return (
     <>
       <Container className="w-50 container">
         <div className="heading d-flex justify-content-between align-items-center">
-          <img style={{ maxWidth: '5rem' }} src={myProfile?.avatar} />
+          <img style={{ maxWidth: "5rem" }} src={myProfile?.avatar} />
           <p>{myProfile?.userName}</p>
           <Button onClick={handleShow}>Edit Profile</Button>
           <div className="icons">
@@ -157,11 +169,20 @@ const SideBar = () => {
         {myChats &&
           myChats.length > 0 &&
           myChats.map((chat) => (
-            <Contact
-              key={chat._id}
-              name={chat.members.map((member) => member.userName).join(', ')}
-              lastMessageTime={chat.updatedAt}
-            />
+            <>
+              <Contact
+                key={chat._id}
+                name={chat.members.map((member) => member.userName).join(", ")}
+                lastMessageTime={chat.updatedAt}
+              />
+              <Button
+                onClick={() => {
+                  onChangeHandler(chat._id);
+                }}
+              >
+                Set
+              </Button>
+            </>
           ))}
       </Container>
       <Modal show={showModal} onHide={handleClose}>
@@ -217,7 +238,7 @@ const SideBar = () => {
         </Modal.Body>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default SideBar
+export default SideBar;
