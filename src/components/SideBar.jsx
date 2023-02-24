@@ -30,6 +30,7 @@ const SideBar = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [filterUsername, setFilterUsername] = useState('')
+  const [usernameSearch, setUsernameSearch] = useState('')
 
   const handleClose = () => setShowModal(false)
   const handleShow = () => setShowModal(true)
@@ -63,6 +64,7 @@ const SideBar = () => {
   }
 
   const handleQuery = async (event) => {
+    setUsernameSearch(event.target.value)
     const options = {
       method: 'GET',
       headers: {
@@ -76,7 +78,7 @@ const SideBar = () => {
       if (response.ok) {
         const data = await response.json()
         setFilterUsername(data)
-        console.log(data)
+        setUsernameSearch('')
       }
     } catch (error) {}
   }
@@ -140,6 +142,7 @@ const SideBar = () => {
           name="enter message"
           className="w-100 input-message"
           placeholder="Search for a user..."
+          value={usernameSearch}
           onChange={(event) => handleQuery(event)}
         />
         <ListGroup className="w-75">
