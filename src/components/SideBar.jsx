@@ -14,39 +14,60 @@ import {
   updateUserDetails,
 } from "../redux/actions";
 
+
 const SideBar = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state);
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { user } = useSelector((state) => state)
 
   const logout = () => {
-    localStorage.removeItem("accessToken");
-    navigate("/login");
-  };
+    localStorage.removeItem('accessToken')
+    navigate('/login')
+  }
 
-  const [showModal, setShowModal] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [avatar, setAvatar] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [showModal, setShowModal] = useState(false)
+  const [userName, setUserName] = useState('')
+  const [avatar, setAvatar] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [filterUsername, setFilterUsername] = useState('')
 
-  const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
+  const handleClose = () => setShowModal(false)
+  const handleShow = () => setShowModal(true)
+
+  const handleQuery = async (event) => {
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+      },
+    }
+    const fetchURL = `http://localhost:3001/users/?userName=${event.target.value}`
+
+    try {
+      let response = await fetch(fetchURL, options)
+      if (response.ok) {
+        const data = await response.json()
+        setFilterUsername(data)
+        console.log(data)
+      }
+    } catch (error) {}
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const updatedDetails = {};
+    e.preventDefault()
+    const updatedDetails = {}
     if (userName) {
-      updatedDetails.userName = userName;
+      updatedDetails.userName = userName
     }
     if (avatar) {
-      updatedDetails.avatar = avatar;
+      updatedDetails.avatar = avatar
     }
     if (email) {
-      updatedDetails.email = email;
+      updatedDetails.email = email
     }
     if (password) {
-      updatedDetails.password = password;
+      updatedDetails.password = password
     }
     dispatch(
       updateUserDetails(
@@ -63,20 +84,21 @@ const SideBar = () => {
     setShowModal(false);
   };
 
+
   useEffect(() => {
-    dispatch(fetchUserDetails());
-  }, [dispatch]);
+    dispatch(fetchUserDetails())
+  }, [dispatch])
   useEffect(() => {
-    dispatch(fetchUserChats());
-  }, [dispatch]);
-  const myProfile = useSelector((state) => state.userInfo);
-  const myChats = useSelector((state) => state.chats);
+    dispatch(fetchUserChats())
+  }, [dispatch])
+  const myProfile = useSelector((state) => state.userInfo)
+  const myChats = useSelector((state) => state.chats)
 
   return (
     <>
       <Container className="w-50 container">
         <div className="heading d-flex justify-content-between align-items-center">
-          <img style={{ maxWidth: "5rem" }} src={myProfile?.avatar} />
+          <img style={{ maxWidth: '5rem' }} src={myProfile?.avatar} />
           <p>{myProfile?.userName}</p>
           <Button onClick={handleShow}>Edit Profile</Button>
           <div className="icons">
@@ -86,6 +108,30 @@ const SideBar = () => {
             <BiLogOut className="icon" onClick={logout} />
           </div>
         </div>
+
+        <input
+          type="text"
+          name="enter message"
+          className="w-100 input-message"
+          placeholder="Search for a user..."
+          onChange={(event) => handleQuery(event)}
+        />
+        <ListGroup className="w-75">
+          {filterUsername &&
+            filterUsername.map((name) => (
+              <ListGroup.Item>{name.userName}</ListGroup.Item>
+            ))}
+        </ListGroup>
+        {myChats &&
+          myChats.length > 0 &&
+          myChats.map((chat) => (
+            <Contact
+              key={chat._id}
+              name={chat.members.join(', ')}
+              lastMessageTime={chat.updatedAt}
+            />
+          ))}
+
         {myChats &&
   myChats.length > 0 &&
   myChats.map((chat) => (
@@ -153,4 +199,5 @@ const SideBar = () => {
   );
 };
 
-export default SideBar;
+
+export default SideBar
