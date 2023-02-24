@@ -34,6 +34,34 @@ const SideBar = () => {
   const handleClose = () => setShowModal(false)
   const handleShow = () => setShowModal(true)
 
+  const createChat = async (recipientID) => {
+    const chat = {
+      recipients: [recipientID],
+    }
+
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(chat),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+      },
+    }
+
+    const fetchURL = `http://localhost:3001/chats/`
+
+    try {
+      let response = await fetch(fetchURL, options)
+      if (response.ok) {
+        const data = await response.json()
+        dispatch(fetchUserChats())
+        setFilterUsername('')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const handleQuery = async (event) => {
     const options = {
       method: 'GET',
@@ -117,7 +145,9 @@ const SideBar = () => {
         <ListGroup className="w-75">
           {filterUsername &&
             filterUsername.map((name) => (
-              <ListGroup.Item>{name.userName}</ListGroup.Item>
+              <ListGroup.Item onClick={() => createChat(name._id)}>
+                {name.userName}
+              </ListGroup.Item>
             ))}
         </ListGroup>
 
